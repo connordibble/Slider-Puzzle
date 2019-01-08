@@ -162,13 +162,24 @@ public class Board {
     }
 
     public static void main(String[] args) {
-        Board b = new Board();
-        int[] values = {1,2,3,4,5,6,8,7,0};
-        Board c = new Board();
-        c.makeBoard(values);
-        b.makeBoard(2);
-        System.out.println(b);
-        System.out.println(c);
+
+        int[] values = {1,2,3,4,6,8,7,0,5};
+        String moves = "LDRUL";
+        char lastMove = 'Z';
+        Board original = new Board();
+        original.makeBoard(values);
+
+        System.out.println("Original Board - Moves " + moves);
+        System.out.println(original);
+
+        for (int i = 0; i < moves.length(); i++) {
+            original.makeMove(moves.charAt(i), lastMove);
+            System.out.println(moves.charAt(i) + "==>");
+            System.out.println(original);
+            lastMove = moves.charAt(i);
+        }
+
+
 
     }
 }
