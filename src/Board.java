@@ -161,7 +161,7 @@ public class Board {
         return m;
     }
 
-    public static void main(String[] args) {
+    void showMe() {
 
         int[] values = {1,2,3,4,6,8,7,0,5};
         String moves = "LDRUL";

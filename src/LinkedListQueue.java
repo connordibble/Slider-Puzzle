@@ -1,7 +1,4 @@
-//Can generate a queue through this linked list class
-//need to figure out how to put enqueue and dequeue
-
-public class LinkedListQueue<E extends Comparable> {
+public class LinkedListQueue<E> {
     private ListNode<E> head = new ListNode<>();
     private ListNode<E> tail;
     private int size = 0;
@@ -23,6 +20,7 @@ public class LinkedListQueue<E extends Comparable> {
 
     //method to remove the head of the queue from the list
     public E dequeue() {
+
       this.head = head.next;
       this.size--;
       return this.head.value;
@@ -38,26 +36,6 @@ public class LinkedListQueue<E extends Comparable> {
         }
         System.out.println();
     }
-
-
-    //method that searches for the value in a linked list
-    public boolean findValue(E search) {
-        ListNode<E> node = head.next;
-
-        //if item is not found, false will be returned
-        boolean found = false;
-        while (!found && node != null) {
-            if (node.value.compareTo(search) == 0) {
-                found = true;
-            }
-            else {
-                node = node.next;
-            }
-        }
-
-        return found;
-    }
-
 
 
     public int getSize() { return this.size; }
