@@ -1,74 +1,108 @@
 import java.util.Scanner;
 public class Game {
 
-    public void playGiven( String label, Board b){
-        System.out.println(label + "\n"+  b);
+    //Method that solves a given board
+    public Board gameSolver(Board myBoard){
+        //Initialize the queue and the Winning Board to compare against
+        Board winningBoard = new Board();
+        winningBoard.makeBoard(0);
+        LinkedListQueue<Board> myQueue = new LinkedListQueue<>();
+        int max = 10000000;  //maximum size of queue allowed
+        myQueue.enqueue(myBoard);
 
+        //runs until we have found a solution to our board using breadth first search
+        while (true) {
+
+            Board a = myQueue.dequeue();
+            Board b = new Board(a);
+            Board c = new Board(a);
+            Board d = new Board(a);
+
+            if(a.makeMove('U', a.getLastMove()) != ' ') {
+                a.setMoves('U');
+                a.setLastMove('U');
+
+                if (a.equals(winningBoard)) {
+                    System.out.println("Size: " + myQueue.getSize());
+                    System.out.println("Boards Removed: " + myQueue.getBoardsRemoved());
+                    System.out.println("Boards Added: " + myQueue.getAdded() + "\n");
+                    return a;
+                }
+                myQueue.enqueue(a);
+
+            }
+
+            if(b.makeMove('D', b.getLastMove()) != ' ') {
+                b.setMoves('D');
+                b.setLastMove('D');
+
+                if (b.equals(winningBoard)) {
+                    System.out.println("Size: " + myQueue.getSize());
+                    System.out.println("Boards Removed: " + myQueue.getBoardsRemoved());
+                    System.out.println("Boards Added: " + myQueue.getAdded() + "\n");
+                    return b;
+                }
+                myQueue.enqueue(b);
+            }
+
+            if(c.makeMove('R', c.getLastMove()) != ' ') {
+                c.setMoves('R');
+                c.setLastMove('R');
+
+                if (c.equals(winningBoard)) {
+                    System.out.println("Size: " + myQueue.getSize());
+                    System.out.println("Boards Removed: " + myQueue.getBoardsRemoved());
+                    System.out.println("Boards Added: " + myQueue.getAdded() + "\n");
+                    return c;
+                }
+                myQueue.enqueue(c);
+            }
+
+            if(d.makeMove('L', d.getLastMove()) != ' '){
+                d.setMoves('L');
+                d.setLastMove('L');
+
+                if (d.equals(winningBoard)) {
+                    System.out.println("Size: " + myQueue.getSize());
+                    System.out.println("Boards Removed: " + myQueue.getBoardsRemoved());
+                    System.out.println("Boards Added: " + myQueue.getAdded() + "\n");
+                    return d;
+                }
+                myQueue.enqueue(d);
+            }
+
+                if(myQueue.getSize() > max){
+                    //If queue gets too large, the puzzle is unsolvable
+                    System.out.println("Unsolvable Puzzle");
+                    return null;
+                }
+        }
     }
-    public void playRandom( String label, int jumbleCount){
-        Board b = new Board();
-        b.makeBoard(jumbleCount);
-        System.out.println(label + "\n" + b);
+
+    //print out the step by step instructions to solve the board
+    public void showMe(Board b) {
+
+        Board original = new Board(b);
+        String moves = gameSolver(b).getMoves();
+        System.out.println("Original Board - Moves " + moves);
+        System.out.println(original.toString());
+
+
+        for (int i = 0; i < moves.length(); i++) {
+            original.makeMove(moves.charAt(i), ' ');
+            System.out.println(moves.charAt(i) + "==>");
+            System.out.println(original);
+        }
 
     }
 
 
     public static void main(String[] args) {
-        Game g = new Game();
-        Scanner in = new Scanner(System.in);
+        Board myBoard = new Board();
+        Game myGame = new Game();
+        int []game1 = { 1, 2, 3, 7, 4, 0, 6, 5, 8 }; //put values 0-8 here to make any kind of board
+        myBoard.makeBoard(game1);
 
-        int [] game0 = { 1, 2, 3, 7, 4, 0, 6, 5, 8 };
-        Board b = new Board();
-        b.makeBoard(game0);
-        g.playGiven("game 0", b);
-        System.out.println("Click any key to continue\n");
-        String resp;
-        resp= in.nextLine();
-
-        int []game1 = { 1, 3, 2, 4, 5, 6, 8, 7, 0 };
-        b.makeBoard(game1);
-        g.playGiven("game 1", b);
-        System.out.println("Click any key to continue\n");
-        resp= in.nextLine();
-
-        int []game2 = { 1, 3, 8, 6, 2, 0, 5, 4, 7 };
-        b.makeBoard(game2);
-        g.playGiven("game 2", b);
-        System.out.println("Click any key to continue\n");
-        resp= in.nextLine();
-
-        int []game3 = { 4, 0, 1, 3, 5, 2, 6, 8, 7 };
-        b.makeBoard(game3);
-        g.playGiven("game 3", b);
-        System.out.println("Click any key to continue\n");
-        resp= in.nextLine();
-
-        int []game4 = { 7, 6, 4, 0, 8, 1, 2, 3, 5 };  // Warning slow to solve
-        b.makeBoard(game4);
-        g.playGiven("game 4", b);
-        System.out.println("Click any key to continue\n");
-        resp= in.nextLine();
-
-        int []game5 = { 1, 2, 3, 4, 5, 6, 8, 7, 0 };   // Warning unsolvable
-        b.makeBoard(game5);
-        g.playGiven("game 5", b);
-        System.out.println("Click any key to continue\n");
-        resp= in.nextLine();
-
-        boolean playAgain = true;
-
-        int JUMBLECT = 4;  // how much jumbling to to in random board
-        while (playAgain)
-        {
-            g.playRandom("Random Board", JUMBLECT);
-
-            System.out.println("Play Again?  Answer Y for yes\n");
-            resp= in.nextLine().toUpperCase();
-            playAgain = (resp.charAt(0) == 'Y');
-        }
-
-
+        myGame.showMe(myBoard);
     }
-
-
 }

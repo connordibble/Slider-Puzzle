@@ -6,6 +6,8 @@ public class Board {
     private int[][] board;  // Values of board
     private int blankRow;   // Row location of blank
     private int blankCol;   // Column location of blank
+    private String moves = "";
+    private char lastMove = ' ';
 
     public Board() {
         board = new int[SIZE][SIZE];
@@ -13,12 +15,14 @@ public class Board {
 
     //Copy constructor
     Board(Board b) {
-        //System.out.println( "Just Copied Board\n" + b.toString() +"\n");
+
         board = new int[SIZE][];
         for (int i = 0; i < SIZE; i++)
             this.board[i] = b.board[i].clone();
         this.blankRow = b.blankRow;
         this.blankCol = b.blankCol;
+        moves = b.moves;
+        lastMove = b.lastMove;
     }
 
     public String toString() {
@@ -112,7 +116,7 @@ public class Board {
     }
 
 
-    // Randomly apply ct moves to the board, makingsure they are legal and don't undo the previous move
+    // Randomly apply ct moves to the board, making sure they are legal and don't undo the previous move
     void jumble(int ct) {
         Random rand = new Random();
         String moveStr = "UDLR";  // Moves representing Up, Down, Left, Right
@@ -125,14 +129,13 @@ public class Board {
                 thisMove = makeMove(thisMove, lastMove);
             }
             lastMove = thisMove;
-            //System.out.println("JUMBLE Moves" + thisMove + '\n');
         }
     }
 
     // Make the move indicated by m (L Left, R Right, U Up, D Down) if it is legal and if it doesn't undo the move specified by lastmove
 // Return a blank if the move could not be made, otherwise return the move
     char makeMove(char m, char lastmove) {
-        //System.out.println( "makeMove " + m + lastmove +"\n");
+
         boolean moved = false;
         switch (m) {
             case 'R':
@@ -161,26 +164,10 @@ public class Board {
         return m;
     }
 
-    void showMe() {
 
-        int[] values = {1,2,3,4,6,8,7,0,5};
-        String moves = "LDRUL";
-        char lastMove = 'Z';
-        Board original = new Board();
-        original.makeBoard(values);
-
-        System.out.println("Original Board - Moves " + moves);
-        System.out.println(original);
-
-        for (int i = 0; i < moves.length(); i++) {
-            original.makeMove(moves.charAt(i), lastMove);
-            System.out.println(moves.charAt(i) + "==>");
-            System.out.println(original);
-            lastMove = moves.charAt(i);
-        }
-
-
-
-    }
+    public String getMoves(){return this.moves;}
+    public void setMoves(char a){this.moves = this.moves + a;}
+    public char getLastMove(){return lastMove;}
+    public void setLastMove(char a){this.lastMove = a;}
 }
 

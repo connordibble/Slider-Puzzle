@@ -2,6 +2,8 @@ public class LinkedListQueue<E> {
     private ListNode<E> head = new ListNode<>();
     private ListNode<E> tail;
     private int size = 0;
+    private int boardsRemoved = 0;
+    private int added = 0;
 
 
     public LinkedListQueue() {
@@ -16,6 +18,7 @@ public class LinkedListQueue<E> {
         tail = node;
 
         this.size++;
+        this.added++;
     }
 
     //method to remove the head of the queue from the list
@@ -23,23 +26,13 @@ public class LinkedListQueue<E> {
 
       this.head = head.next;
       this.size--;
+      this.boardsRemoved++;
       return this.head.value;
     }
 
-    //Show the Queue
-    public void show() {
-        ListNode<E> current = head.next;
-        System.out.println("--- Values in List ---");
-        while (current != null) {
-            System.out.println(current.value);
-            current = current.next;
-        }
-        System.out.println();
-    }
-
-
     public int getSize() { return this.size; }
-    public boolean isEmpty() { return this.size == 0; }
+    public int getAdded() { return this.added; }
+    public int getBoardsRemoved() { return this.boardsRemoved; }
 
     //nested class that creates a node for the linked list
     private class ListNode<E> {
