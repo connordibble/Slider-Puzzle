@@ -8,9 +8,7 @@ public class Board implements Comparable<Board> {
     private int blankCol;   // Column location of blank
     private String moves = "";
     private char lastMove = ' ';
-    private int movesSoFar;
-    public int placesAway;
-    private Integer priority = 0;
+    private int placesAway;
 
     public Board() {
         board = new int[SIZE][SIZE];
@@ -167,21 +165,18 @@ public class Board implements Comparable<Board> {
         return m;
     }
 
-    //method to find the number of places different from the winning board
+    //method to find the number of places different from the winning board using hamming distance
     public void findPlacesAway(){
-        Board winningBoard = new Board();
         this.placesAway = 0;
+        Board winningBoard = new Board();
         winningBoard.makeBoard(0);
         for (int i = 0; i < 3 ; i++) {
             for (int j = 0; j < 3; j++) {
-                if (this.board[i][j] != winningBoard.board[i][j]) this.placesAway +=1;
+                if (this.board[i][j] != winningBoard.board[i][j]) this.placesAway += 1;
             }
-            this.placesAway /= 2; //since a position out of place will count twice we divide by 2
         }
-
     }
 
-    public void incrementMovesSoFar(){this.movesSoFar += 1;}
 
     //do your board comparisons here
     @Override
@@ -193,7 +188,7 @@ public class Board implements Comparable<Board> {
     public void setMoves(char a){this.moves = this.moves + a;}
     public char getLastMove(){return lastMove;}
     public void setLastMove(char a){this.lastMove = a;}
-    public Integer getPriority(){return this.movesSoFar + this.placesAway;}
+    public Integer getPriority(){return this.moves.length() + this.placesAway;}
 
 
 }

@@ -22,6 +22,9 @@
  */
 public class AVLTree<AnyType extends Comparable<? super AnyType>>
 {
+    private int size = 0;
+    private int boardsRemoved = 0;
+    private int added = 0;
     /**
      * Construct the tree.
      */
@@ -34,8 +37,7 @@ public class AVLTree<AnyType extends Comparable<? super AnyType>>
      * Insert into the tree; duplicates are ignored.
      * @param x the item to insert.
      */
-    public void insert( AnyType x )
-    {
+    public void insert( AnyType x ) {
         root = insert( x, root, null );
     }
 
@@ -115,6 +117,7 @@ public class AVLTree<AnyType extends Comparable<? super AnyType>>
     public void makeEmpty( )
     {
         root = null;
+        this.size = 0;
     }
 
     /**
@@ -188,8 +191,12 @@ public class AVLTree<AnyType extends Comparable<? super AnyType>>
      * @return the new root of the subtree.
      */
     private AvlNode<AnyType> insert( AnyType x, AvlNode<AnyType> t, AvlNode<AnyType> parent ) {
-        if( t == null )
+
+        if( t == null ){
+            this.size++;
+            this.added++;
             return new AvlNode<>( x, null, null );
+        }
 
         int compareResult = x.compareTo( t.element );
 
@@ -198,6 +205,8 @@ public class AVLTree<AnyType extends Comparable<? super AnyType>>
         else
             t.right = insert( x, t.right, t );
 
+        this.size++;
+        this.added++;
         return balance( t );
     }
 
@@ -215,16 +224,25 @@ public class AVLTree<AnyType extends Comparable<? super AnyType>>
         return t;
     }
 
+
     //recursive method to delete the minimum value in an AVL tree
     private AvlNode<AnyType> deleteMin( AvlNode<AnyType> t ) {
        if (t == null) return null;
 
-       if (t.left == null && t.right == null) return null; //case with no right children
+       if (t.left == null && t.right == null){
+           this.size --;
+           this.boardsRemoved++;
+           return null; //case with no right children
+       }
 
-       if (t.left == null) return t.right; //if there is a right child, it becomes the new min
+       if (t.left == null){
+           this.size--;
+           this.boardsRemoved++;
+           return t.right; //if there is a right child, it becomes the new min
+       }
 
        t.left = deleteMin(t.left); //delete the minimum value
-       
+
        return balance(t); //return the tree balanced
 
     }
@@ -344,6 +362,18 @@ public class AVLTree<AnyType extends Comparable<? super AnyType>>
         return leftRotation( t );
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public int getBoardsRemoved() {
+        return boardsRemoved;
+    }
+
+    public int getAdded() {
+        return added;
+    }
+
     private static class AvlNode<AnyType>
     {
         // Constructors
@@ -368,24 +398,5 @@ public class AVLTree<AnyType extends Comparable<? super AnyType>>
 
     /** The tree root. */
     private AvlNode<AnyType> root;
-
-
-    // Test program
-    public static void main( String [ ] args ) {
-        AVLTree<Integer> t = new AVLTree<>();
-        AVLTree<Dwarf> t2 = new AVLTree<>();
-        String[] nameList = {"Snowflake", "Sneezy", "Doc", "Grumpy", "Bashful", "Dopey", "Happy", "Doc", "Grumpy", "Bashful", "Doc", "Grumpy", "Bashful"};
-
-        for (int i=0; i < nameList.length; i++) t2.insert(new Dwarf(nameList[i]));
-        t2.printTree( "The Tree" );
-
-
-        t2.remove(new Dwarf("Bashful"));
-        t2.printTree( "The Tree after delete Bashful" );
-
-        for (int i=0; i < 8; i++) {
-            t2.deleteMin();t2.printTree( "\n\n The Tree after deleteMin" );
-        }
-    }
 
 }
